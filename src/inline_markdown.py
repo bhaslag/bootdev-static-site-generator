@@ -32,6 +32,16 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
 
     return new_nodes
 
+def split_nodes_link(old_nodes):
+  new_nodes = []
+
+  for node in old_nodes:
+    links = extract_markdown_links(node.text)
+  # print(links)
+  for link_text, link_url in links:
+    sections = node.text.split(f"![{link_text}]({link_url})")
+  print(sections)
+
 def extract_markdown_images(text):
   pattern = r"!\[([^\[\]]*)\]\(([^\(\)]*)\)"
   matches = re.findall(pattern, text)
