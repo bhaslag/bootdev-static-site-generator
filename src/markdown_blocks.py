@@ -1,23 +1,48 @@
 from enum import Enum
 
-BlockType = Enum('BlockType', [
-   ("PARAGRAPH", "paragraph"),
-   ("HEADING", "heading"),
-   ("CODE", "code"),
-   ("QUOTE", "quote"),
-   ("UL", "ul"),
-   ("OL", "ol")
-   ])
 
-def markdown_to_blocks(doc):
-   strings = []
+class BlockType(Enum):
+    PARAGRAPH = "paragraph"
+    HEADING = "heading"
+    CODE = "code"
+    QUOTE = "quote"
+    OLIST = "ordered_list"
+    ULIST = "unordered_list"
 
-   for line in doc.split("\n\n"):
-      if len(line) == 0:
-         continue
 
-      strings.append(line.strip())
+def markdown_to_blocks(markdown):
+    blocks = markdown.split("\n\n")
+    filtered_blocks = []
+    for block in blocks:
+        if block == "":
+            continue
+        block = block.strip()
+        filtered_blocks.append(block)
+    return filtered_blocks
 
-   return strings
 
-def block_to_blocktype(block):
+def block_to_block_type(block):
+    lines = block.split("\n")
+
+    if block.startswith(("# ", "## ", "### ", "#### ", "##### ", "###### ")):
+        return BlockType.HEADING
+    if len(lines) > 1 and lines[0].startswith("```") and lines[-1].startswith("```"):
+        return BlockType.CODE
+    if block.startswith(">"):
+        for line in lines:
+            if not line.startswith(">"):
+                return BlockType.PARAGRAPH
+        return BlockType.QUOTE
+    if block.startswith("- "):
+        for line in lines:
+            if not line.startswith("- "):
+                return BlockType.PARAGRAPH
+        return BlockType.ULIST
+    if block.startswith("1. "):
+        i = 1
+        for line in lines:
+            if not line.startswith(f"{i}. "):
+                return BlockType.PARAGRAPH
+            i += 1
+        return BlockType.OLIST
+    return BlockType.PARAGRAPH
