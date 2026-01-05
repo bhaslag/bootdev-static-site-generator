@@ -1,10 +1,5 @@
 from enum import Enum
-paragraph
-heading
-code
-quote
-unordered_list
-ordered_list
+
 BlockType = Enum('BlockType', [
    ("PARAGRAPH", "paragraph"),
    ("HEADING", "heading"),
