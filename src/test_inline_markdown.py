@@ -5,6 +5,7 @@ from inline_markdown import (
     split_nodes_image,
     extract_markdown_images,
     extract_markdown_links,
+    extract_markdown_h1,
     text_to_textnodes,
 )
 
