@@ -18,8 +18,8 @@ def main():
     print("Copying static files to public directory...")
     copy_files_recursive(dir_path_static, dir_path_public)
 
-    if len(sys.argv) > 0:
-        base_path = sys.argv[0]
+    if len(sys.argv) > 1:
+        base_path = sys.argv[1]
     else:
         base_path = "/"
     generate_pages_recursive("content", "./template.html", dir_path_public, base_path)

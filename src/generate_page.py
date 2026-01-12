@@ -1,4 +1,5 @@
 import os
+import re
 
 from markdown_blocks import markdown_to_html_node
 
@@ -34,9 +35,10 @@ def generate_page(from_path, template_path, dest_path, base_path):
         template_file_content
         .replace("{{ Title }}", page_title)
         .replace("{{ Content }}", page_content)
-        .replace('href="/', f'href="{base_path}"')
-        .replace('src="/', f'src="{base_path}"')
     )
+
+    final_html = re.sub(r'href="/', f'href="{base_path}', final_html)
+    final_html = re.sub(r'src="/', f'src="{base_path}', final_html)
 
     # Write output
     with open(dest_path, "w", encoding="utf-8") as f:
